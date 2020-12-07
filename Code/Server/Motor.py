@@ -78,6 +78,26 @@ class Motor:
         self.left_Lower_Wheel(duty_list_[1])
         self.right_Upper_Wheel(duty_list_[2])
         self.right_Lower_Wheel(duty_list_[3])
+
+    def move_forward(self, length, time_):
+        self.setMotorModel(length, length, length, length)       
+        time.sleep(time_)
+        self.setMotorModel(0, 0, 0, 0)                   
+
+    def move_backward(self, length, time_):
+        self.setMotorModel(-length, -length, -length, -length)       
+        time.sleep(time_)
+        self.setMotorModel(0, 0, 0, 0)                   
+
+    def move_left(self, length, time_):
+        self.setMotorModel(-500, -500, length, length)      
+        time.sleep(time_)
+        self.setMotorModel(0, 0, 0, 0)                   
+
+    def move_right(self, length, time_):
+        self.setMotorModel(length, length, -500, -500)      
+        time.sleep(time_)
+        self.setMotorModel(0, 0, 0, 0)                   
             
 PWM = Motor()
 
@@ -95,30 +115,6 @@ def loop():
 def destroy():
     PWM.setMotorModel(0, 0, 0, 0)                   
 
-def move_forward(length, time_):
-    _pwm = Motor()
-    _pwm.setMotorModel(length, length, length, length)       
-    time.sleep(time_)
-    _pwm.setMotorModel(0, 0, 0, 0)                   
-
-def move_backward(length, time_):
-    _pwm = Motor()
-    _pwm.setMotorModel(-length, -length, -length, -length)      
-    time.sleep(time_)
-    _pwm.setMotorModel(0, 0, 0, 0)                   
-
-def move_left(length, time_):
-    _pwm = Motor()
-    _pwm.setMotorModel(-500, -500, length, length)      
-    time.sleep(time_)
-    _pwm.setMotorModel(0, 0, 0, 0)                   
-
-def move_right(length, time_):
-    _pwm = Motor()
-    _pwm.setMotorModel(length, length, -500, -500)      
-    time.sleep(time_)
-    _pwm.setMotorModel(0, 0, 0, 0)                   
-            
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--forward", "-F", type=int, help="Speed moving forward")
@@ -130,12 +126,16 @@ if __name__=='__main__':
 
     try:
         if args.forward:
-            move_forward(args.forward, args.time)
+            m = Motor()
+            m.move_forward(args.forward, args.time)
         if args.backward:
-            move_backward(args.backward, args.time)
+            m = Motor()
+            m.move_backward(args.backward, args.time)
         if args.left:
-            move_left(args.left, args.time)
+            m = Motor()
+            m.move_left(args.left, args.time)
         if args.right:
-            move_right(args.right, args.time)
+            m = Motor()
+            m.move_right(args.right, args.time)
     except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
         destroy()
