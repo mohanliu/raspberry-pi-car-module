@@ -15,14 +15,10 @@ from Command import COMMAND as cmd
 from Thread import *
 from Client_Ui import Ui_Client
 from Video import *
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import * 
-class mywindow(QMainWindow,Ui_Client):
+
+class SmartCarRemoteControl():
     def __init__(self):
         global timer
-        super(mywindow,self).__init__()
         self.setupUi(self)
         self.endChar='\n'
         self.intervalChar='#'
@@ -631,10 +627,6 @@ class mywindow(QMainWindow,Ui_Client):
         
             
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    myshow=mywindow()
-    myshow.show();   
-    sys.exit(app.exec_())
-    
+    t = SmartCarRemoteControl()
 
 
