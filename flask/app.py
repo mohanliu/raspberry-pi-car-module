@@ -1,21 +1,21 @@
-from flask import Flask, Response
+from flask import Flask, Response, jsonify, render_template, request
 import cv2
 import numpy as np
+from module import Motor
 
 app = Flask(__name__)
 video = cv2.VideoCapture(0)
 
-
 @app.route('/')
 def index():
-    return "Default Message"
+    return render_template('index.html')
 
 def gen(video):
     while True:
         success, image = video.read()
         ret, jpeg = cv2.imencode('.jpg', image)
 
-        face_cascade = cv2.CascadeClassifier(r'haarcascade_frontalface_default.xml')
+        face_cascade = cv2.CascadeClassifier(r'static/haarcascade_frontalface_default.xml')
 
         img = cv2.imdecode(np.frombuffer(jpeg, dtype=np.uint8), cv2.IMREAD_COLOR)
 
@@ -40,6 +40,29 @@ def video_feed():
     global video
     return Response(gen(video),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/_movemotor')
+def movemotor():
+
+    time = request.args.get("time", "1")
+    speed = request.args.get("speed", "1000")
+    direction = request.args.get("direction", "forward")
+
+    m = Motor.Motor()
+
+    if direction == "forward":
+        m.move_forward(int(speed), float(time))
+
+    if direction == "backward":
+        m.move_backward(int(speed), float(time))
+
+    if direction == "left":
+        m.move_left(int(speed), float(time))
+
+    if direction == "right":
+        m.move_right(int(speed), float(time))
+
+    return jsonify()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
