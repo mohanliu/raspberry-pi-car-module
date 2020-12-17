@@ -6,6 +6,14 @@
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+  <style type="text/css">
+    button.movement {
+      width: 100%;
+      padding: 20px 5px 20px 5px;
+      font-size: 30px;
+      border-radius: 30px
+    }
+  </style>
 </head>
 <body>
 <script type=text/javascript>
@@ -47,43 +55,56 @@
     });
   });
 </script>
-<div class="row">
-  <div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <label class="input-group-text" for="SpeedChoice">Speed</label>
-  </div>
-  <select class="custom-select" id="SpeedChoice">
-    <option value="2500" selected>Fast</option>
-    <option value="1500">Medium</option>
-    <option value="1000">Slow</option>
-  </select>
+<div class="container">
+<div style="margin: 50px 50px 50px 50px;">
+  <h1 style="text-align: center;margin-bottom: 30px"> Control Panel </h1>
+  <div class="row justify-content-md-center">
+    <div class="col-md-3">
+      <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="SpeedChoice">Speed</label>
+      </div>
+      <select class="custom-select" id="SpeedChoice">
+        <option value="2500" selected>Fast</option>
+        <option value="1500">Medium</option>
+        <option value="1000">Slow</option>
+      </select>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="TimeChoice">Time</label>
+      </div>
+      <select class="custom-select" id="TimeChoice">
+        <option value="1" selected>Short</option>
+        <option value="2">Medium</option>
+        <option value="3">Long</option>
+      </select>
+      </div>
+    </div>
   </div>
 
-  <div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <label class="input-group-text" for="TimeChoice">Time</label>
+  <div class="row justify-content-md-center">
+    <div class="col-md-3">
+      <button type="button" class="btn btn-success movement" id="moveforward">Forward</button>
+    </div>
   </div>
-  <select class="custom-select" id="TimeChoice">
-    <option value="1" selected>Short</option>
-    <option value="2">Medium</option>
-    <option value="3">Long</option>
-  </select>
+  <div class="row justify-content-md-center">
+    <div class="col-md-3">
+      <button type="button" class="btn btn-success movement" id="turnleft">Left</button>
+    </div>
+    <div class="col-md-3 offset-md-3">
+      <button type="button" class="btn btn-success movement" id="turnright">Right</button>
+    </div>
   </div>
-
+  <div class="row justify-content-md-center">
+    <div class="col-md-3">
+      <button type="button" class="btn btn-success movement" id="movebackward">Backward</button>
+    </div>
+  </div>
 </div>
-<div class="row">
-  <div class="col-md-3">
-    <button type="button" class="btn btn-primary" id="moveforward">Forward</button>
-  </div>
-  <div class="col-md-3">
-    <button type="button" class="btn btn-primary" id="movebackward">Backward</button>
-  </div>
-  <div class="col-md-3">
-    <button type="button" class="btn btn-primary" id="turnleft">Left</button>
-  </div>
-  <div class="col-md-3">
-    <button type="button" class="btn btn-primary" id="turnright">Right</button>
-  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
