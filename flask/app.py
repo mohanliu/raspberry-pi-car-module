@@ -1,7 +1,6 @@
 from flask import Flask, Response, jsonify, render_template, request
 import cv2
 import numpy as np
-from module import Motor
 
 app = Flask(__name__)
 video = cv2.VideoCapture(0)
@@ -43,6 +42,7 @@ def video_feed():
 
 @app.route('/_movemotor')
 def movemotor():
+    from module import Motor
 
     time = request.args.get("time", "1")
     speed = request.args.get("speed", "1000")
@@ -64,6 +64,21 @@ def movemotor():
 
     return jsonify()
 
+@app.route('/_rotatecamera')
+def rotatecamera():
+    from module import servo
+
+    nod = request.args.get("nod", "90")
+    shake = request.args.get("shake", "90")
+
+    s = servo.Servo()
+
+    s.head_nod(int(nod))
+    s.head_shake(int(shake))
+
+    return jsonify()
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
+
 
