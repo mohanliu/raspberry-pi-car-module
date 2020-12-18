@@ -22,36 +22,48 @@
 </script>
 <script type=text/javascript>
   $(function() {
-    $('#moveforward').bind('click', function() {
-      $.getJSON($SCRIPT_ROOT + '/_movemotor', {
-        time: $('#TimeChoice option:selected').val(),
+    $('#moveforward').bind('mousedown', function() {
+      $.getJSON($SCRIPT_ROOT + '/_startmovemotor', {
         speed: $('#SpeedChoice option:selected').val(),
         direction: "forward"
       }, function(data) {});
       return false;
     });
-    $('#movebackward').bind('click', function() {
-      $.getJSON($SCRIPT_ROOT + '/_movemotor', {
-        time: $('#TimeChoice option:selected').val(),
+    $('#moveforward').bind('mouseup', function() {
+      $.getJSON($SCRIPT_ROOT + '/_stopmovemotor', {}, function(data) {});
+      return false;
+    });
+    $('#movebackward').bind('mousedown', function() {
+      $.getJSON($SCRIPT_ROOT + '/_startmovemotor', {
         speed: $('#SpeedChoice option:selected').val(),
         direction: "backward"
       }, function(data) {});
       return false;
     });
-    $('#turnleft').bind('click', function() {
-      $.getJSON($SCRIPT_ROOT + '/_movemotor', {
-        time: $('#TimeChoice option:selected').val(),
+    $('#movebackward').bind('mouseup', function() {
+      $.getJSON($SCRIPT_ROOT + '/_stopmovemotor', {}, function(data) {});
+      return false;
+    });
+    $('#turnleft').bind('mousedown', function() {
+      $.getJSON($SCRIPT_ROOT + '/_startmovemotor', {
         speed: $('#SpeedChoice option:selected').val(),
         direction: "left"
       }, function(data) {});
       return false;
     });
-    $('#turnright').bind('click', function() {
-      $.getJSON($SCRIPT_ROOT + '/_movemotor', {
-        time: $('#TimeChoice option:selected').val(),
+    $('#turnleft').bind('mouseup', function() {
+      $.getJSON($SCRIPT_ROOT + '/_stopmovemotor', {}, function(data) {});
+      return false;
+    });
+    $('#turnright').bind('mousedown', function() {
+      $.getJSON($SCRIPT_ROOT + '/_startmovemotor', {
         speed: $('#SpeedChoice option:selected').val(),
         direction: "right"
       }, function(data) {});
+      return false;
+    });
+    $('#turnright').bind('mouseup', function() {
+      $.getJSON($SCRIPT_ROOT + '/_stopmovemotor', {}, function(data) {});
       return false;
     });
     $('#rotate').bind('click', function() {
@@ -78,19 +90,6 @@
         <option value="2500" selected>Fast</option>
         <option value="1500">Medium</option>
         <option value="1000">Slow</option>
-      </select>
-      </div>
-    </div>
-
-    <div class="col-md-12" style="margin-top: 10px; margin-bottom: 10px">
-      <div class="input-group mb-12">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="TimeChoice">Time</label>
-      </div>
-      <select class="custom-select" id="TimeChoice">
-        <option value="1" selected>Short</option>
-        <option value="2">Medium</option>
-        <option value="3">Long</option>
       </select>
       </div>
     </div>
@@ -189,4 +188,3 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
-

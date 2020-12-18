@@ -98,6 +98,22 @@ class Motor:
         self.setMotorModel(length, length, -500, -500)      
         time.sleep(time_)
         self.setMotorModel(0, 0, 0, 0)                   
+
+    def move_forward_start(self, length):
+        self.setMotorModel(length, length, length, length)       
+
+    def move_backward_start(self, length):
+        self.setMotorModel(-length, -length, -length, -length)       
+
+    def move_left_start(self, length, _backstep=500):
+        self.setMotorModel(-_backstep, -_backstep, length, length)      
+
+    def move_right_start(self, length, _backstep=500):
+        self.setMotorModel(length, length, -_backstep, -_backstep)      
+
+    def move_stop(self):
+        self.setMotorModel(0, 0, 0, 0)
+        
             
 PWM = Motor()
 

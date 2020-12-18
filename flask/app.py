@@ -40,28 +40,35 @@ def video_feed():
     return Response(gen(video),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/_movemotor')
-def movemotor():
-    from module import Motor
-
-    time = request.args.get("time", "1")
+@app.route('/_startmovemotor')
+def startmovemotor():
     speed = request.args.get("speed", "1000")
     direction = request.args.get("direction", "forward")
 
-    m = Motor.Motor()
+    from module import motor
+    m = motor.Motor()
 
     if direction == "forward":
-        m.move_forward(int(speed), float(time))
+        m.move_forward_start(int(speed))
 
     if direction == "backward":
-        m.move_backward(int(speed), float(time))
+        m.move_backward_start(int(speed))
 
     if direction == "left":
-        m.move_left(int(speed), float(time))
+        m.move_left_start(int(speed))
 
     if direction == "right":
-        m.move_right(int(speed), float(time))
+        m.move_right_start(int(speed))
 
+    return jsonify()
+
+@app.route('/_stopmovemotor')
+def stopmovemotor():
+    from module import motor
+    m = motor.Motor()
+
+    m.move_stop()
+    
     return jsonify()
 
 @app.route('/_rotatecamera')
@@ -80,5 +87,6 @@ def rotatecamera():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
+
 
 
