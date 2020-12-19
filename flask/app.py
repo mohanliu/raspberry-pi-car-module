@@ -9,35 +9,49 @@ video = cv2.VideoCapture(0)
 def index():
     return render_template('index.html')
 
-def gen(video):
+def gen(video, mode="normal"):
     while True:
         success, image = video.read()
         ret, jpeg = cv2.imencode('.jpg', image)
 
-        face_cascade = cv2.CascadeClassifier(r'static/haarcascade_frontalface_default.xml')
+        if mode == "normal":
+            frame = jpeg.tobytes()
 
-        img = cv2.imdecode(np.frombuffer(jpeg, dtype=np.uint8), cv2.IMREAD_COLOR)
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-        gray = cv2.cvtColor(img,cv2. COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+        elif mode == "face_detection":
+            face_cascade = cv2.CascadeClassifier(r'static/haarcascade_frontalface_default.xml')
 
-        if len(faces) > 0 :
-            for (x,y,w,h) in faces:
-                face_x = float(x+w/2.0)
-                face_y = float(y+h/2.0)
-                img = cv2.circle(img, (int(face_x), int(face_y)), int((w+h)/4), (0, 255, 0), 2)
+            img = cv2.imdecode(np.frombuffer(jpeg, dtype=np.uint8), cv2.IMREAD_COLOR)
 
-        _, new_jpeg = cv2.imencode('.jpg', img)
+            gray = cv2.cvtColor(img,cv2. COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
-        frame = new_jpeg.tobytes()
-        # frame = jpeg.tobytes()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+            if len(faces) > 0 :
+                for (x,y,w,h) in faces:
+                    face_x = float(x+w/2.0)
+                    face_y = float(y+h/2.0)
+                    img = cv2.circle(img, (int(face_x), int(face_y)), int((w+h)/4), (0, 255, 0), 2)
 
-@app.route('/video_feed')
-def video_feed():
-    global video
-    return Response(gen(video),
+            _, new_jpeg = cv2.imencode('.jpg', img)
+
+            frame = new_jpeg.tobytes()
+            # frame = jpeg.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+@app.route('/video_feed_normal')
+def video_feed_normal():
+    # global video
+    return Response(gen(video, "normal"),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_feed_facedetection')
+def video_feed_facedetection():
+    # global video
+    return Response(gen(video, "face_detection"),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/_startmovemotor')

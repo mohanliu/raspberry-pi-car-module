@@ -22,47 +22,47 @@
 </script>
 <script type=text/javascript>
   $(function() {
-    $('#moveforward').bind('mousedown', function() {
+    $('#moveforward').bind('mousedown touchstart', function() {
       $.getJSON($SCRIPT_ROOT + '/_startmovemotor', {
         speed: $('#SpeedChoice option:selected').val(),
         direction: "forward"
       }, function(data) {});
       return false;
     });
-    $('#moveforward').bind('mouseup', function() {
+    $('#moveforward').bind('mouseup touchend', function() {
       $.getJSON($SCRIPT_ROOT + '/_stopmovemotor', {}, function(data) {});
       return false;
     });
-    $('#movebackward').bind('mousedown', function() {
+    $('#movebackward').bind('mousedown touchstart', function() {
       $.getJSON($SCRIPT_ROOT + '/_startmovemotor', {
         speed: $('#SpeedChoice option:selected').val(),
         direction: "backward"
       }, function(data) {});
       return false;
     });
-    $('#movebackward').bind('mouseup', function() {
+    $('#movebackward').bind('mouseup touchend', function() {
       $.getJSON($SCRIPT_ROOT + '/_stopmovemotor', {}, function(data) {});
       return false;
     });
-    $('#turnleft').bind('mousedown', function() {
+    $('#turnleft').bind('mousedown touchstart', function() {
       $.getJSON($SCRIPT_ROOT + '/_startmovemotor', {
         speed: $('#SpeedChoice option:selected').val(),
         direction: "left"
       }, function(data) {});
       return false;
     });
-    $('#turnleft').bind('mouseup', function() {
+    $('#turnleft').bind('mouseup touchend', function() {
       $.getJSON($SCRIPT_ROOT + '/_stopmovemotor', {}, function(data) {});
       return false;
     });
-    $('#turnright').bind('mousedown', function() {
+    $('#turnright').bind('mousedown touchstart', function() {
       $.getJSON($SCRIPT_ROOT + '/_startmovemotor', {
         speed: $('#SpeedChoice option:selected').val(),
         direction: "right"
       }, function(data) {});
       return false;
     });
-    $('#turnright').bind('mouseup', function() {
+    $('#turnright').bind('mouseup touchend', function() {
       $.getJSON($SCRIPT_ROOT + '/_stopmovemotor', {}, function(data) {});
       return false;
     });
@@ -135,9 +135,23 @@
 
 
 <div class="col-lg-9">
-  <h3 style="text-align: center">Live Streaming<button type="button" class="btn btn-danger" id="stream_switch" style="margin-left: 10px" onclick="video_streaming_switch()">On</button></h3>
+  <div class="row justify-content-md-center">
+  <h3 style="text-align: center" class="col-md-8">Live Streaming<button type="button" class="btn btn-danger" id="stream_switch" style="margin-left: 10px" onclick="video_streaming_switch()">On</button></h3>
 
-  <img src="{{ url_for('video_feed') }}" width="100%" id="video_feed_frame">
+    <div class="col-md-4">
+      <div class="input-group mb-12">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="ModeChoice">Mode</label>
+      </div>
+      <select class="custom-select" id="ModeChoice">
+        <option value="normal" selected>Normal</option>
+        <option value="face_detection">Face Detection</option>
+        <option value="gray">Gray Scale</option>
+      </select>
+      </div>
+    </div>
+  </div>
+  <img src="{{ url_for('video_feed_normal') }}" width="100%" id="video_feed_frame">
 </div>
 </div>
 </div>
@@ -179,7 +193,14 @@
     } else {
       but.innerHTML = "On";
       but.className = "btn btn-danger";
-      img.src = "{{ url_for('video_feed') }}";
+
+      mode = document.getElementById("ModeChoice").value;
+
+      if ( mode == "normal" ) {
+        img.src = "{{ url_for('video_feed_normal') }}";
+      } else if ( mode == "face_detection" ) {
+        img.src = "{{ url_for('video_feed_facedetection') }}";
+      }
     }
 }
 </script>
